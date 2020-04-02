@@ -8,6 +8,7 @@ The field value is an object. For internal links, it looks like this:
 
 ```json
 {
+  "linkTitle": "",
   "linkType": "internal",
   "entry": {}
 }
@@ -19,6 +20,7 @@ For external links, it looks like this:
 
 ```json
 {
+  "linkTitle": "",
   "linkType": "external",
   "url": "https://example.com"
 }
@@ -40,14 +42,14 @@ To test the extension locally, you need a Contentful space to install it in.
 # Clone and install
 git clone https://github.com/ueno-llc/contentful-extension-link-field
 cd contentful-extension-link-field
-npm install
+yarn install
 
 # Log in to Contentful and install test extension into a space
 npm run login
 npm run configure
 
 # Compile extension
-npm start
+yarn start
 ```
 
 Before you commit your changes, run `npm run build`. Contentful loads the extension code directly from GitHub, so the file `build/index.html` needs to be up to date.

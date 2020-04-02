@@ -6,6 +6,7 @@ import { init } from 'contentful-ui-extensions-sdk';
 import '@contentful/forma-36-react-components/dist/styles.css';
 import './index.css';
 
+const LINK_TITLE = 'linkTitle';
 const LINK_TYPE = 'linkType';
 const LINK_TYPE_INTERNAL = 'internal';
 const LINK_TYPE_EXTERNAL = 'external';
@@ -27,6 +28,7 @@ const LINK_TYPE_EXTERNAL = 'external';
  */
 
 class App extends React.Component {
+
   /**
    * Prop types for `<App />`.
    * @prop {Object} sdk - Contentful SDK. Added to the component automatically.
@@ -129,12 +131,26 @@ class App extends React.Component {
   }
 
   /**
+   * When the Link title field changes, update the field value.
+   * @param {String} value - New title String.
+   */
+  handleLinkTitle(value) {
+    const { sdk } = this.props;
+
+    sdk.field.setValue({
+      ...this.state.value,
+      linkTitle: value,
+    });
+  }
+
+  /**
    * When the link type ("internal" vs. "external") changes, update the field value.
    * @param {String} value - New link type. Should be `'internal'` or `'external'`.
    */
   handleLinkTypeChange(value) {
     const nextState = {
       linkType: value,
+      linkTitle: this.state.value.linkTitle,
     };
 
     if (value === LINK_TYPE_INTERNAL) {
@@ -240,6 +256,17 @@ class App extends React.Component {
     return (
       <Fragment>
         <FieldGroup>
+          <TextField
+            labelText="Link title"
+            id={LINK_TITLE}
+            value={value.linkTitle}
+            onChange={e => this.handleLinkTitle(e.target.value)}
+            textInputProps={{
+            width: 'large',
+            type: 'text',
+            placeholder: 'Enter link title',
+          }}
+          />
           <RadioButtonField
             labelText="Internal"
             helpText="Link to internal content"
@@ -308,6 +335,6 @@ class App extends React.Component {
   }
 }
 
-init(sdk => {
+init((sdk) => {
   ReactDOM.render(<App sdk={sdk} />, document.getElementById('root'));
 });
